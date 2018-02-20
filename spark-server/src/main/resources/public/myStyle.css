@@ -1,0 +1,60 @@
+body {
+    background: goldenrod;
+}
+
+#searcharea {
+    margin: 0 auto;
+    text-align: center;
+    background: gold;
+    padding: 10px;
+    width: 30%;
+    border-radius: 10px 10px 0 0;
+}
+
+#searcharea label {
+    font: bold 1.3em Arial;
+    text-transform: uppercase;
+    padding-bottom: 5px;
+    color: aqua;
+}
+
+#searcharea p {
+    margin: 0;
+    line-height: 1em;
+    padding-bottom: 5px;
+}
+
+#searcharea input {
+    width: 80%;
+    text-align: center;
+}
+
+#update {
+    font-family: Georgia, "Times New Roman", serif;
+    width: 70%;
+    margin: 0 auto;
+    border-top: 1px dotted #CCC;
+}
+
+#update ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#update ul li{
+    width: 100%;
+    padding: 0 20px;
+    background: #EEE;
+    padding-bottom: 10px;
+    height: 110px;
+    overflow: hidden;
+    border-bottom: 1px dotted #CCC;
+}
+
+#update li:hover{
+    background: antiquewhite;
+    min-width: 110px;
+    height: 250px;
+    overflow: visible;
+}
