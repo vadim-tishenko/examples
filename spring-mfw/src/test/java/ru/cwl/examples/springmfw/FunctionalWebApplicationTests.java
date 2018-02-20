@@ -1,4 +1,6 @@
-package ru.cwl.examples.springmfw; /**
+package ru.cwl.examples.springmfw;
+
+/**
  * Created by tischenko on 19.02.2018 14:33.
  */
 
