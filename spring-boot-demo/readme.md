@@ -1,0 +1,1 @@
+/h2-console  jdbcUrl: jdbc:h2:mem:testdb
