@@ -23,6 +23,8 @@
         <module>spark-server</module>
         <module>lombok</module>
         <module>async-servlet-compare</module>
+        <module>dao</module>
+        <module>mybatis</module>
     </modules>
 
     <dependencies>

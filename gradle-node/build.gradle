@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id "com.moowork.node" version "1.2.0"
+//    id "com.moowork.grunt" version "1.2.0"
+//    id "com.moowork.gulp" version "1.2.0"
+}
+
+//apply plugin: 'com.moowork.node'
+
+group 'ru.cwl.example'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+node{
+    version = "10.5.0"
+    download = true
+}
