@@ -25,6 +25,7 @@
         <module>async-servlet-compare</module>
         <module>dao</module>
         <module>mybatis</module>
+        <module>poi</module>
     </modules>
 
     <dependencies>
