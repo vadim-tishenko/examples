@@ -26,6 +26,8 @@
         <module>dao</module>
         <module>mybatis</module>
         <module>poi</module>
+        <module>telegram-bot-example</module>
+        <module>mongo-db</module>
     </modules>
 
     <dependencies>
