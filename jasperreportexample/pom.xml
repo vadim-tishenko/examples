@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ru.cwl.examples</groupId>
+    <artifactId>jasper-report-example</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <jasperreports.version>6.5.1</jasperreports.version>
+        <!--<jasperreports.version>5.6.0</jasperreports.version>-->
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasperreports.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.lucene</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jfree</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.castor</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <!--                <exclusion>
+                                    <groupId>org.eclipse.jdt.core.compiler</groupId>
+                                    <artifactId>*</artifactId>
+                                </exclusion>-->
+                <!--                <exclusion>
+                                    <groupId>com.lowagie</groupId>
+                                    <artifactId>*</artifactId>
+                                </exclusion>-->
+                <exclusion>
+                    <groupId>org.olap4j</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>com.ibm.icu</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>com.google.zxing</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+          <!--      <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+
+                </exclusion>-->
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jasper</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+</project>
