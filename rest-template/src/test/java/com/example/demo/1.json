@@ -1,0 +1,38 @@
+{
+  "routes": [
+    {
+      "legs": [
+        {
+          "summary": "",
+          "weight": 901.2,
+          "duration": 660.7,
+          "steps": [],
+          "distance": 4127.7
+        }
+      ],
+      "weight_name": "routability",
+      "weight": 901.2,
+      "duration": 660.7,
+      "distance": 4127.7
+    }
+  ],
+  "waypoints": [
+    {
+      "hint": "gdsJgOZb54QkAAAAOgAAAA4AAAAAAAAAeOI0QY6li0FoZYRAAAAAACQAAAA6AAAADgAAAAAAAABfowAAAEzMAKlYIQM8TMwArVghAwEA3wpAv2Mx",
+      "name": "Friedrichstraße",
+      "location": [
+        13.3888,
+        52.517033
+      ]
+    },
+    {
+      "hint": "fH8YgP___38cAAAA2AAAACIAAABQAAAAsowKQkpQX0Lx6yZC8esmQhwAAABsAAAAIgAAACkAAABfowAASufMAOdwIQNL58wA03AhAwMAvxBAv2Mx",
+      "name": "Platz der Vereinten Nationen",
+      "location": [
+        13.428554,
+        52.523239
+      ]
+    }
+  ],
+  "code": "Ok"
+}

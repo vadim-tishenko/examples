@@ -28,6 +28,7 @@
         <module>poi</module>
         <module>telegram-bot-example</module>
         <module>mongo-db</module>
+        <module>spring</module>
     </modules>
 
     <dependencies>
