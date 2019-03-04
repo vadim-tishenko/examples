@@ -1,0 +1,10 @@
+# https://www.baeldung.com/spring-boot-logging
+# https://www.baeldung.com/logback
+# https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html
+# https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-logging.html
+
+logging:
+  level:
+    ru.cwl.example.sb2logging:
+      LoggingController2: DEBUG
+      LoggingController: TRACE
