@@ -13,19 +13,20 @@ public class StorageRun {
     public static final int LINE_COUNT = 15000;
 
     public static void main(String[] args) {
-        TrafficRepository repo = new TrafficPlainFileRepository("c:/dev/tmp/test-storage", 60 * 60 * 24);
-        TrafficDto dto = TrafficDto.builder()
-                .trId(1)
-                .time(10)
-                .lon(2.4).lat(5.6)
-                .speed(10).heading(200)
-                .alt(100)
-                .build();
+        TrafficRepository repo = new TrafficPlainFileRepository("d:/dev/tmp/test-storage", 60 * 60 * 24);
+        TrafficDtoSource source = new TrafficDtoSource();
+//        TrafficDto dto = TrafficDto.builder()
+//                .trId(1)
+//                .time(10)
+//                .lon(2.4).lat(5.6)
+//                .speed(10).heading(200)
+//                .alt(100)
+//                .build();
 
         log.info("start save");
         long start = System.currentTimeMillis();
         for (int i = 0; i < LINE_COUNT; i++) {
-            repo.save(dto);
+            repo.save(source.get());
         }
         long finish = System.currentTimeMillis();
 
