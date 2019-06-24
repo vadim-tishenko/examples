@@ -15,15 +15,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
-public class TrafficPlainFileRepository implements TrafficRepository {
+public class TrafficPlainFileRepository extends BaseTrafficRepository implements TrafficRepository {
 
     public static final long SECONDS_PER_DAY = 60 * 60 * 24;
 
     private final String rootPath;
     private final long periodLen;
+
+    ExecutorService executorService= Executors.newFixedThreadPool(16);
+//  Executors.newSingleThreadExecutor() end save,iops: 621.6329
+
+    public void waitOk()  {
+        executorService.shutdown();
+        try {
+            boolean res =executorService.awaitTermination(200, TimeUnit.SECONDS);
+            log.info("waitOk:{}",res);
+        } catch (InterruptedException e) {
+            log.error("",e);
+        }
+    }
 
     public TrafficPlainFileRepository() {
         this("D:\\var\\plain-file-storage", SECONDS_PER_DAY);
@@ -36,30 +52,33 @@ public class TrafficPlainFileRepository implements TrafficRepository {
 
     @Override
     public void save(TrafficDto dto) {
-        String content = content(dto);
-        final String fileName = fileNameForPeriod(dto.getTrId(), getPeriodId(dto.getTime()));
-        final Path path = Paths.get(fileName);
+        executorService.submit(()->{
+            String content = content(dto);
+            final String fileName = fileNameForPeriod(dto.getTrId(), getPeriodId(dto.getTime()));
+            final Path path = Paths.get(fileName);
 
-        try {
-            File targetFile = new File(fileName);
-            if (!targetFile.exists()) {
-                File parent = targetFile.getParentFile();
-                if (!parent.exists() && !parent.mkdirs()) {
-                    throw new IllegalStateException("Couldn't create dir: " + parent);
+            try {
+                File targetFile = new File(fileName);
+                if (!targetFile.exists()) {
+                    File parent = targetFile.getParentFile();
+                    if (!parent.exists() && !parent.mkdirs()) {
+                        throw new IllegalStateException("Couldn't create dir: " + parent);
+                    }
+                    if (!targetFile.createNewFile()) {
+                        throw new IllegalStateException("Couldn't create file: " + targetFile);
+                    }
                 }
-                if (!targetFile.createNewFile()) {
-                    throw new IllegalStateException("Couldn't create file: " + targetFile);
-                }
-            }
 
-            save1(path, content);
+                save1(path, content);
 
 //            save2(fileName,content);
 
 
-        } catch (IOException e) {
-            log.error("save", e);
-        }
+            } catch (IOException e) {
+                log.error("save", e);
+            }
+        });
+
     }
 
     private void save1(Path path, String content) throws IOException {
@@ -123,31 +142,7 @@ public class TrafficPlainFileRepository implements TrafficRepository {
 //        return result;
 //    }
 
-    private List<TrafficDto> toDto(long trId, List<String> lines, long from, long to) {
-        List<TrafficDto> result = new ArrayList<>(lines.size());
-        for (String line : lines) {
-            TrafficDto dto = getTrafficDto(trId, line);
-            if (dto.getTime() < from) continue;
-            if (dto.getTime() >= to) continue;
-            result.add(dto);
-        }
-        return result;
-    }
-
-    private TrafficDto getTrafficDto(long trId, String line) {
-        String[] sss = line.split(";");
-        return TrafficDto.builder()
-                .trId(trId)
-                .time(Long.valueOf(sss[0]))
-                .lat(Double.valueOf(sss[1]))
-                .lon(Double.valueOf(sss[2]))
-                .speed(Integer.valueOf(sss[3]))
-                .heading(Integer.valueOf(sss[4]))
-                .alt(Integer.valueOf(sss[5]))
-                .build();
-    }
-
-//    String fileName(TrafficDto dto) {
+    //    String fileName(TrafficDto dto) {
 //        return rootPath + "\\" + getPeriodId(dto.time) + "\\" + dto.getTrId() + "\\traffic.csv";
 //    }
 
@@ -174,12 +169,6 @@ public class TrafficPlainFileRepository implements TrafficRepository {
         return (getPeriodId(time) + 1) * periodLen;
     }
     ///
-
-    String content(TrafficDto dto) {
-        String result = String.format(Locale.ROOT,"%d;%f;%f;%d;%d;%d\n", dto.getTime(), dto.getLat(), dto.getLon(), dto.getSpeed(),
-                dto.getHeading(), dto.getAlt());
-        return result;
-    }
 
 }
 /*

@@ -1,19 +1,19 @@
 package ru.cwl.example.telematicfilestorage;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.cwl.example.telematicfilestorage.storage.TrafficDto;
+import redis.clients.jedis.Jedis;
 import ru.cwl.example.telematicfilestorage.storage.TrafficPlainFileRepository;
 import ru.cwl.example.telematicfilestorage.storage.TrafficRepository;
-
-import java.util.List;
+import ru.cwl.example.telematicfilestorage.storage.redisstorage.RedisStringTelematicStorage;
+import ru.cwl.example.telematicfilestorage.storage.redisstorage.RedisTelematicStorage;
 
 @Slf4j
-public class StorageRun {
+public class JedisStorageRun {
 
-    public static final int LINE_COUNT = 150000;
+    public static final int LINE_COUNT = 15000;
 
     public static void main(String[] args) {
-        TrafficPlainFileRepository repo = new TrafficPlainFileRepository("c:/dev/tmp/test-storage", 60 * 60 * 24);
+        TrafficRepository repo = new RedisStringTelematicStorage(new Jedis());
         TrafficDtoSource source = new TrafficDtoSource();
 //        TrafficDto dto = TrafficDto.builder()
 //                .trId(1)
@@ -28,7 +28,6 @@ public class StorageRun {
         for (int i = 0; i < LINE_COUNT; i++) {
             repo.save(source.get());
         }
-        repo.waitOk();
         long finish = System.currentTimeMillis();
 
         log.info("end save,iops: {} ", LINE_COUNT / ((finish - start) / 1000.0f));
