@@ -5,7 +5,7 @@ import io.lettuce.core.api.sync.RedisCommands;
 
 import java.util.List;
 
-public class MainLetucceListExample {
+public class MainLettuceListExample {
 
     public static void main(String[] args) {
         RedisClient redisClient = RedisClient.create("redis://localhost:6379/0");
