@@ -13,11 +13,13 @@ public class MainLettuceListExample {
         RedisCommands<String, String> syncCommands = connection.sync();
         RedisAsyncCommands<String, String> asyncCommands = connection.async();
 
-        syncCommands.set("key", "Hello, Redis!");
 
+        syncCommands.set("key", "Hello, Redis!");
         String res = syncCommands.get("key");
 
         System.out.println(res);
+
+        long start1 = System.currentTimeMillis();
 
 
         Long len = syncCommands.llen("list:1");
@@ -35,18 +37,26 @@ public class MainLettuceListExample {
             final double x = (stop - start) / 1000.0;
 
             System.out.print("sec: "+ x);
-            System.out.println("w iops:"+10000/x);
+            System.out.println("w iops:"+(int)(10000/x));
         }
 
 
         len = syncCommands.llen("list:1");
+
+        long stop2 = System.currentTimeMillis();
+
+        final double x2 = (stop2 - start1) / 1000.0;
+
+        System.out.print("\nsec: "+ x2);
+        System.out.println(" all w iops:"+(10000*20)/x2);
+
         System.out.println(len);
         System.out.println("read...");
         long start = System.currentTimeMillis();
         List<String> resList = syncCommands.lrange("list:1", 0, -1);
         long stop = System.currentTimeMillis();
         final double x = (stop - start) / 1000.0;
-        System.out.print("sec: "+ x);
+        System.out.print("\nsec: "+ x);
         System.out.println("r iops:"+len/x);
 
         System.out.println(resList.size());
