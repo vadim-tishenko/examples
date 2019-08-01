@@ -10,12 +10,12 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 
         final String srcPath = "C:\\dev\\tmp\\refr\\";
-        List<MyBean> result = getTfcSensors(srcPath + "TRAFFIC.tsv", MyBean.class);
+        List<MyBean> result = loadTsv(srcPath + "TRAFFIC.tsv", MyBean.class);
 
         final String fileName = srcPath + "TFC_SENSOR_21007.tsv";
         final Class aClass = TfcSensor.class;
 
-        List<TfcSensor> result2 = getTfcSensors(fileName, aClass);
+        List<TfcSensor> result2 = loadTsv(fileName, aClass);
 
         String inFiles[] = {
                 "TFC_SENSOR_3.tsv",
@@ -31,7 +31,7 @@ public class Main {
         List<TfcSensor> resultAll = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             for (String inFile : inFiles) {
-                List<TfcSensor> result3 = getTfcSensors(srcPath+inFile, TfcSensor.class);
+                List<TfcSensor> result3 = loadTsv(srcPath+inFile, TfcSensor.class);
                 resultAll.addAll(result3);
             }
         }
@@ -40,14 +40,14 @@ public class Main {
 
     }
 
-    private static <T> List<T> getTfcSensors(String fileName, Class<T> aClass) throws FileNotFoundException {
-        HeaderColumnNameTranslateMappingStrategy2<T> strat3 = new HeaderColumnNameTranslateMappingStrategy2<T>(aClass);
+    private static <T> List<T> loadTsv(String fileName, Class<T> aClass) throws FileNotFoundException {
+        HeaderColumnNameToPropertyMappingStrategy<T> mappingStrategy = new HeaderColumnNameToPropertyMappingStrategy<T>(aClass);
 
-        CsvToBean<T> aa2 = new CsvToBeanBuilder<T>(new FileReader(fileName))
+        CsvToBean<T> tsvToBean = new CsvToBeanBuilder<T>(new FileReader(fileName))
                 .withSeparator('\t')
-                .withMappingStrategy(strat3)
+                .withMappingStrategy(mappingStrategy)
                 .withType(aClass).build();
 
-        return aa2.parse();
+        return tsvToBean.parse();
     }
 }
