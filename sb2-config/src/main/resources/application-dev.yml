@@ -1,0 +1,23 @@
+app:
+  name: raja
+  age: 12
+  some-map:
+    abcd: 1
+    bcbd: 2
+    cdbd: 3
+  some-str-list:
+    - aaaa
+    - bbbbbbbb
+    - cccc dddd eeee
+  int-str-map:
+    2: ssss
+    4: bbbbb-rrrr
+    5: fffff_eee
+  url:
+    in: http://inUrl
+    out: http://inUrl
+  run-services:
+    aaa: off
+
+server:
+  port: 8080

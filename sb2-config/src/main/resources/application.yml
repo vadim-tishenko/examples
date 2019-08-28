@@ -1,0 +1,29 @@
+app:
+  name: raja
+  age: 12
+  some-map:
+    abcd: 1
+    bcbd: 2
+    cdbd: 3
+  some-str-list:
+    - aaaa
+    - bbbbbbbb
+    - cccc dddd eeee
+  int-str-map:
+    2: ssss
+    4: bbbbb-rrrr
+    5: fffff_eee
+  url:
+    in: http://inUrl
+    out: http://inUrl
+# запуск бинов по необходимости
+# По дефолту запускаються, конфигурация с помощью аннотации
+# @ConditionalOnProperty(prefix = "app.run-services", name = "bbb", matchIfMissing = true)
+
+#  run-services:
+#    aaa: on
+#    bbb: off
+#    ccc: true
+
+server:
+  port: 8080
