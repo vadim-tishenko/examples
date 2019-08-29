@@ -4,6 +4,18 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.security.KeyPair;
 
+/**
+   https://jwt.io/
+   https://github.com/jwtk/jjwt
+
+ https://www.cryptosys.net/pki/rsakeyformats.html
+ https://help.globalscape.com/help/archive/eft6-2/mergedprojects/eft/server_ssh_key_formats.htm
+ https://stackoverflow.com/questions/12749858/rsa-public-key-format
+
+ https://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file
+
+ */
+
 public class Main {
     public static void main(String[] args) {
 //        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
