@@ -19,6 +19,9 @@ import java.security.PublicKey;
  * https://stackoverflow.com/questions/12749858/rsa-public-key-format
  * <p>
  * https://stackoverflow.com/questions/11410770/load-rsa-public-key-from-file
+ *
+ * тут запись и загрузка ключей с Base64
+ * https://www.sql.ru/forum/379952/kak-preobrazovat-public-private-key-v-stroku-i-obratno?hl=privatekey
  */
 
 public class Main {
