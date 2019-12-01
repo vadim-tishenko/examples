@@ -24,11 +24,11 @@ public class Main {
         System.out.println("start samp");
         MeasureTask measureTask = new MeasureTask(request);
         List<MeasureTask> taskList = new ArrayList<>();
-        for (int i = 0; i < 2000; i++) {
+        for (int i = 0; i < 200; i++) {
             taskList.add(measureTask);
         }
 
-        Collection<MeasureResult> result = testRunner(taskList, 4);
+        Collection<MeasureResult> result = testRunner(taskList, 10);
         calcStatistic(result);
 
  /*
@@ -70,7 +70,7 @@ public class Main {
 
     static Collection<MeasureResult> testRunner(Collection<MeasureTask> tasks) {
         PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
-        connManager.setMaxTotal(10);
+        connManager.setMaxTotal(20);
         connManager.setDefaultMaxPerRoute(10);
         CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(connManager).build();
 
@@ -103,8 +103,8 @@ public class Main {
 
 
         PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
-        connManager.setMaxTotal(10);
-        connManager.setDefaultMaxPerRoute(10);
+        connManager.setMaxTotal(20);
+        connManager.setDefaultMaxPerRoute(12);
         CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(connManager).build();
 
         ConcurrentLinkedQueue<MeasureResult> resultList = new ConcurrentLinkedQueue<>();
@@ -116,7 +116,7 @@ public class Main {
             final int tc = taskCount;
             executor.execute(() -> {
                 try {
-                    System.out.println("start " + tc);
+//                    System.out.println("start " + tc);
 
                     long start = System.currentTimeMillis();
                     CloseableHttpResponse response = httpClient.execute(task.getRequest());
@@ -128,7 +128,7 @@ public class Main {
 
                     MeasureResult measureResult = new MeasureResult(task, start, finish, statusCode, contentLength);
                     resultList.add(measureResult);
-                    System.out.println("finish " + tc);
+//                    System.out.println("finish " + tc);
 
                 } catch (IOException e) {
                     System.err.println("ERR!");
@@ -147,7 +147,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        System.out.println("finish2 " + resultList.size());
+        System.out.println("finish2 --- " + resultList.size());
 
         return resultList;
     }
