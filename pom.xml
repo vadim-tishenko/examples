@@ -29,6 +29,7 @@
         <module>telegram-bot-example</module>
         <module>mongo-db</module>
         <module>spring</module>
+        <module>http-request-meter</module>
     </modules>
 
     <dependencies>
