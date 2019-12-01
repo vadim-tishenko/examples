@@ -14,58 +14,29 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class Main {
-// https://www.baeldung.com/httpclient-guide
+
+    // https://www.baeldung.com/httpclient-guide
 
     public static void main(String[] args) throws IOException {
+        final int TASK_COUNT = 200;
+        List<MeasureTask> taskList = getMeasureTasks(TASK_COUNT);
 
+        System.out.println("start samp");
+        Collection<MeasureResult> result = testRunner(taskList, 4);
+        calcStatistic(result);
+    }
+
+    private static List<MeasureTask> getMeasureTasks(int taskCount) {
         final String SAMPLE_URL = "http://iot.f5x.ru:8080/measures/for/1/0?period=DAY";
 
         HttpGet request = new HttpGet(SAMPLE_URL);
-        System.out.println("start samp");
+
         MeasureTask measureTask = new MeasureTask(request);
         List<MeasureTask> taskList = new ArrayList<>();
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < taskCount; i++) {
             taskList.add(measureTask);
         }
-
-        Collection<MeasureResult> result = testRunner(taskList, 10);
-        calcStatistic(result);
-
- /*
- PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
-        connManager.setMaxTotal(10);
-        connManager.setDefaultMaxPerRoute(10);
-
-        final String SAMPLE_URL = "http://iot.f5x.ru:8080/measures/for/1/0?period=DAY";
-        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(connManager).build();
-  Map<Long, Integer> resultMap = new ConcurrentHashMap<>();
-        Map<Long, Integer> rpsMap = new ConcurrentHashMap<>();
-         int total = 200;
- ConcurrentLinkedQueue<MeasureResult> resultList = new ConcurrentLinkedQueue<>();
- for (int i = 0; i < total; i++) {
-            long start = System.currentTimeMillis();
-            CloseableHttpResponse response = httpClient.execute(measureTask.getRequest());
-            long finish = System.currentTimeMillis();
-
-            int statusCode = response.getStatusLine().getStatusCode();
-            long contentLength = EntityUtils.toByteArray(response.getEntity()).length;
-
-            MeasureResult measureResult = new MeasureResult(measureTask, start, finish, statusCode, contentLength);
-            resultList.add(measureResult);
-
-            response.close();
-            long l = finish - start;
-            Integer count = resultMap.computeIfAbsent(l, (a) -> 0);
-            resultMap.put(l, count + 1);
-
-            long sec = (int) (finish / 1000);
-            Integer count2 = rpsMap.computeIfAbsent(sec, (a) -> 0);
-            rpsMap.put(sec, count2 + 1);
-        }
-
-        System.out.println("finish samp");
-
-        calcStatistic(resultList);*/
+        return taskList;
     }
 
     static Collection<MeasureResult> testRunner(Collection<MeasureTask> tasks) {
@@ -137,12 +108,15 @@ public class Main {
             });
         }
         executor.execute(() -> {
+            System.out.println("shutdown!");
             executor.shutdown();
         });
         System.out.println("finish-----");
 
         try {
             executor.awaitTermination(100, TimeUnit.SECONDS);
+            System.out.println("shutdown ok");
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -204,12 +178,8 @@ public class Main {
             if (count > percentile[n] * total) {
                 System.out.printf(Locale.ENGLISH, "%5.1f%% %5dms\n", 100 * percentile[n], e.getKey());
                 n += 1;
-//                if (n >= percentile.length) n = percentile.length - 1;
             }
         }
-//        m2.forEach((ms, cnt) -> {
-//            System.out.printf("%d %d\n", ms, cnt);
-//        });
     }
 
 }
