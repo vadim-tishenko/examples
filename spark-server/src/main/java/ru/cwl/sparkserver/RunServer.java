@@ -9,7 +9,9 @@ import static spark.Spark.staticFiles;
  */
 public class RunServer {
     public static void main(String[] args) {
-        staticFiles.externalLocation("sparkserver\\src\\main\\resources\\public");
+//        staticFiles.externalLocation("sparkserver\\src\\main\\resources\\public");
+        // root is 'src/main/resources', so put files in 'src/main/resources/public'
+        staticFiles.location("/public"); // Static files
         get("/hello", (req, res) -> "Hello World");
         System.out.println("http://localhost:4567/hello");
     }
