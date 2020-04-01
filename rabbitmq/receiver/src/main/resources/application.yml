@@ -1,0 +1,6 @@
+spring:
+  rabbitmq:
+    host: 'host.ru'
+    virtual-host: 'xxxx'
+    username: 'xxxx'
+    password: 'xxxx'

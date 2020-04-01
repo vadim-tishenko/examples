@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.*;
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +20,8 @@ import java.util.List;
 
 @Component
 public class PacketSaver implements ApplicationContextAware {
-
-
+    String dir = "/home/vad/temp/o2/";
+    int fileNo = 0;
     Batch batch = new Batch();
 
     long started = System.currentTimeMillis();
@@ -27,6 +30,13 @@ public class PacketSaver implements ApplicationContextAware {
     @PostConstruct
     void init() {
         log.info("PacketSaver start");
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+        LocalDateTime ldt = LocalDateTime.now();
+
+        dir = dir + ldt.format(fmt)+"/";
+        File  f = new File(dir);
+        boolean r1 = f.mkdirs();
+        log.info("dump to dir: {} {}",dir,r1);
     }
 
     @PreDestroy
@@ -57,12 +67,18 @@ public class PacketSaver implements ApplicationContextAware {
     }
 
 
+    DecimalFormat fmt = new DecimalFormat("00000000");
+
     private void save(Batch batch) {
-        log.info("save! sz:{}" , batch.packets.size());
-        String dir = "/home/vad/temp/o1/";
-        String fileName = dir + batch.started;
+        //??StopWatch watch = new StopWatch();
+        fileNo++;
+        log.info("save! sz:{}", batch.packets.size());
+        // TODO: 01.04.2020 создавать каталог по времени начала ггггммдд-ччммсс 
+
+        String fileName = dir + fmt.format(fileNo);
         String dataFileName = fileName + ".dat";
         String indexFileName = fileName + ".idx";
+
         try {
             OutputStream outputStream = null;
             DataOutputStream dataOutputStream = null;
@@ -79,23 +95,24 @@ public class PacketSaver implements ApplicationContextAware {
             dataOutputStream.close();
 
         } catch (FileNotFoundException e) {
-            log.error("",e);
+            log.error("", e);
         } catch (IOException e) {
-            log.error("",e);
+            log.error("", e);
         }
         log.info("save finish!");
     }
 
+    // TODO: 01.04.2020 параметры в конфиг+дефолтные параметры
     private boolean isBatchDone(Batch batch) {
-        final int MAX_BACH_SIZE = 10000;
-        final int MAX_SECONDS_PER_BATCH = 10;
+        final int MAX_BACH_SIZE = 100000;
+        final int MAX_SECONDS_PER_BATCH = 30;
         long now = System.currentTimeMillis();
         return batch.packets.size() >= MAX_BACH_SIZE || (now - batch.started) >= MAX_SECONDS_PER_BATCH * 1000;
     }
 
     boolean isProcessDone() {
-        final int MAX_PROCESS_SIZE = 1000_0000;
-        final int MAX_PROCESS_SECONDS = 120;
+        final int MAX_PROCESS_SIZE = 7*1000_0000;
+        final int MAX_PROCESS_SECONDS = 60*60;
         long now = System.currentTimeMillis();
         return totalCount >= MAX_PROCESS_SIZE || (now - started) >= MAX_PROCESS_SECONDS * 1000;
     }
